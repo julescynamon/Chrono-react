@@ -48,18 +48,68 @@ export default function Chrono() {
 		setWorkingChrono(!workingChrono);
 	};
 
+	const handleSession = (e) => {
+		const el = e.target;
+
+		if (el.classList.contains("minus")) {
+			if (sessionTime / 60 > 1) {
+				setSessionTime(sessionTime - 60);
+				setSessionTimeFixed(sessionTimeFixed - 60);
+			}
+		} else if (el.classList.contains("plus")) {
+			setSessionTime(sessionTime + 60);
+			setSessionTimeFixed(sessionTimeFixed + 60);
+		}
+	};
+
+	const handleBreak = (e) => {
+		const el = e.target;
+
+		if (el.classList.contains("minus")) {
+			if (breakTime / 60 > 1) {
+				setBreakTime(breakTime - 60);
+				setBreakTimeFixed(breakTimeFixed - 60);
+			}
+		} else if (el.classList.contains("plus")) {
+			setBreakTime(breakTime + 60);
+			setBreakTimeFixed(breakTimeFixed + 60);
+		}
+	};
+
+	const resetFunc = () => {
+		if (workingChrono) {
+			setWorkingChrono(!workingChrono);
+		}
+		setSessionTime(sessionTimeFixed);
+		setBreakTime(breakTimeFixed);
+	};
+
 	return (
-		<div className='container-chrono'>
+		<div
+			className={
+				workingChrono
+					? "container-chrono anim-glow"
+					: "container-chrono"
+			}
+		>
 			<div className='container-config'>
 				<div className='box-btns session'>
-					<button className='minus'>-</button>
+					<button onClick={handleSession} className='minus'>
+						-
+					</button>
 					<span>{sessionTimeFixed / 60}</span>
-					<button className='plus'>+</button>
+					<button onClick={handleSession} className='plus'>
+						+
+					</button>
 				</div>
 				<div className='box-btns break'>
-					<button className='minus'>-</button>
+					<button onClick={handleBreak} className='minus'>
+						-
+					</button>
 					<span>{breakTimeFixed / 60}</span>
-					<button className='plus'>+</button>
+					<button onClick={handleBreak} className='plus'>
+						+
+					</button>
 				</div>
 			</div>
 			<h1>
@@ -85,7 +135,7 @@ export default function Chrono() {
 				<button onClick={playPause}>
 					<img src={workingChrono ? PauseImg : PlayImg} alt='play' />
 				</button>
-				<button>
+				<button onClick={resetFunc}>
 					<img src={ResetImg} alt='reset' />
 				</button>
 			</div>
